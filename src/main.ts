@@ -14,17 +14,17 @@ async function bootstrap() {
   app.setBaseViewsDir(__dirname + '/public');
   app.setViewEngine('html');
 
-  app.use(TokenIntercept);
+  // app.use(TokenIntercept);
 
-  app.use('/', (req, res, next) => {
-    if (req.path === '/'){
-      LoginVerify(req, res, next, () => {
-        res.render('./index');
-      });
-    } else {
-      next();
-    }
-  });
+  // app.use('/', (req, res, next) => {
+  //   if (req.path === '/'){
+  //     LoginVerify(req, res, next, () => {
+  //       res.render('./index');
+  //     });
+  //   } else {
+  //     next();
+  //   }
+  // });
 
   // 添加类型代理
   app.use('/type/all', proxy(AppConfig.ClueDerivationWebServ, {

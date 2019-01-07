@@ -19,25 +19,3 @@ export const FormatTables = new mongoose.Schema({
   // 创建时间
   createTime: { type: Date, index: true },
 });
-
-// import { Entity, ObjectIdColumn, ObjectID, Column, BaseEntity } from 'typeorm';
-// import { ColumnFormat } from '../api/tableInfo/tableInfo.interface';
-
-// @Entity()
-// export class FormatTables extends BaseEntity {
-//   // 唯一id
-//   @ObjectIdColumn()
-//   id: ObjectID;
-//   // 数据库信息id
-//   @Column({ unique: true })
-//   sourceId: string;
-//   // 标准化过后的列对象
-//   @Column()
-//   column: ColumnFormat[];
-//   // 表名
-//   @Column()
-//   tableName: string;
-//   // 创建时间
-//   @Column({ length: 500 })
-//   createTime: string;
-// }

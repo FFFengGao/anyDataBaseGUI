@@ -38,7 +38,7 @@ export class TargetResDTO extends TargetParamsDTO{
 }
 
 // 修改目标数据DTO
-export class EditDTO {
+export class TargetEditDTO {
   @ApiModelProperty({ description: '唯一id' })
   _id: string;
 

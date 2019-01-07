@@ -4,7 +4,9 @@ export const SourceData = new mongoose.Schema({
   // 数据库信息id
   sourceId: { type: String, index: true },
   // 当前数据的别名
-  name: String,
+  name: { type: String, index: true },
+  // 查询方式
+  queryFunc: String,
   // 标准化过后的列对象
   column: [{
     // 数据库表头
@@ -16,39 +18,5 @@ export const SourceData = new mongoose.Schema({
     // 是否被勾选
     checked: Boolean,
   }],
-  createTime: Date,
+  createTime: { type: Date, index: true },
 });
-
-// import { Entity, ObjectIdColumn, Column, BaseEntity, ObjectID } from 'typeorm';
-// import { ColumnFormat } from '../api/tableInfo/tableInfo.interface';
-
-// @Entity()
-// export class SourceData extends BaseEntity {
-//   // 唯一id
-//   @ObjectIdColumn()
-//   id: ObjectID;
-//   // 来源数据库id
-//   @Column({ unique: true })
-//   sourceId: string;
-//   // 链接地址
-//   @Column({ unique: true })
-//   ip: string;
-//   // 端口号
-//   @Column()
-//   port: number;
-//   // 数据库类型
-//   @Column({ unique: true })
-//   dbType: string;
-//   // 表名
-//   @Column()
-//   tableName: string;
-//   // 标准化过后的表名
-//   @Column()
-//   column: ColumnFormat[];
-//   // 当前数据的别名
-//   @Column()
-//   name: string;
-//   // 创建时间
-//   @Column({ length: 500 })
-//   createTime: string;
-// }

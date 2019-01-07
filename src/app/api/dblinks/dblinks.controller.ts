@@ -1,8 +1,8 @@
-import { Get, Controller, Post, Body, Query, Header, Headers } from '@nestjs/common';
+import { Get, Controller, Post, Body, Query } from '@nestjs/common';
 import { DBlinksService } from './dblinks.service';
-import { QueryDTO, FindOneDTO, SQLQueryDTO, EditDTO, DBlinks} from './dblinks.dto';
+import { QueryDTO, FindOneDTO, SQLQueryDTO, BDlinkEditDTO, DBlinks} from './dblinks.dto';
 import { ApiResponse, ApiUseTags, ApiOperation } from '@nestjs/swagger';
-import { ResFromatType, HeadersDTO } from '../../common/common';
+import { ResFromatType } from '../../common/common';
 import { dblist } from '../../common/db.common';
 
 @ApiUseTags('数据库相关部分')
@@ -76,7 +76,7 @@ export class DBlinksController {
   @Post('/edit')
   @ApiOperation({ title: '根据_id更改连接信息' })
   @ApiResponse({ status: 200, type: ResFromatType })
-  edit(@Body() editDTO: EditDTO) {
+  edit(@Body() editDTO: BDlinkEditDTO) {
     return this.dBlinksService.edit(editDTO);
   }
 

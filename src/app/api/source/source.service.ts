@@ -4,7 +4,8 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { SourceInterface } from './source.interface';
 import { DBInfoInterface } from '../dblinks/dblinks.interface';
-import { ResFromat } from '../../common/common';
+import { ResFromat, rowsFormat } from '../../common/common';
+import { ConnectionPublic } from '../../common/db.common';
 
 @Injectable()
 export class SourceService {
@@ -65,5 +66,41 @@ export class SourceService {
     }).catch((err) => {
       return ResFromat(0, '删除成功!');
     });
+  }
+
+  /**
+   * 根据当前给出的sourceId信息返回标准化后的字段
+   * @param pageDTO {
+   *   _id: source字段的信息
+   *   page: 页码
+   *   pageSize: 页数
+   * }
+   */
+  async getSourceData(pageDTO){
+    let sourceData: any = await this.sourceModel.findById(pageDTO._id).catch(console.error);
+    sourceData = JSON.parse(JSON.stringify(sourceData));
+    sourceData.dbInfo = await this.dbInfoModel.findById(sourceData.sourceId).catch(console.error);
+    const db = ConnectionPublic(sourceData.dbInfo);
+    await db.getConnection();
+    // 查询数据库总和
+    let count = await this.getSourceCount(db, sourceData.queryFunc);
+    // 传入需要查询的sql
+    return db.sqlExecute(db.pageTo(sourceData.queryFunc, pageDTO.pageSize, pageDTO.page * pageDTO.pageSize)).then((value: any) => {
+      const resData = rowsFormat(value.metaData, value.rows);
+      db.dbConnection.close();
+      return ResFromat(1, '获取数据成功!', {
+        count,
+        resData,
+      });
+    }).catch((err) => {
+      return ResFromat(0, err || err.message);
+    });
+  }
+
+  // 将查询语句进行计数统计
+  getSourceCount(db, queryFunc){
+    let sqlArr = queryFunc.split(' ');
+    sqlArr[1] = 'count(*)';
+    return db.sqlExecute(sqlArr.join(' '));
   }
 }

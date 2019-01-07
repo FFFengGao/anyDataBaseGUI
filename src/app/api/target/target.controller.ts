@@ -1,7 +1,7 @@
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { Controller, Get, Query, Post, Body } from '@nestjs/common';
 import { TargetService } from './target.service';
-import { TargetResDTO, TargetParamsDTO, EditDTO } from './target.dto';
+import { TargetResDTO, TargetParamsDTO, TargetEditDTO } from './target.dto';
 import { PageDTO, ResFromatType } from '../../common/common';
 import { FindOneDTO } from '../dblinks/dblinks.dto';
 
@@ -43,7 +43,7 @@ export class TargetController {
   @Post('/edit')
   @ApiOperation({ title: '根据id修改指定目标地址接口' })
   @ApiResponse({ status: 200, type: ResFromatType })
-  edit(@Body() editDTO: EditDTO){
+  edit(@Body() editDTO: TargetEditDTO){
     return this.targetService.edit(editDTO);
   }
 }

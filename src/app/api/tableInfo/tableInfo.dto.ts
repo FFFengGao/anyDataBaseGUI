@@ -44,7 +44,10 @@ export class QueryStandradParam{
   readonly tableName: string;
 }
 
-export class EditDTO {
+export class TableEditDTO {
+  @ApiModelProperty({ description: '标准化字段的唯一id' })
+  readonly _id: string;
+
   @ApiModelProperty({ description: '数据库信息_id'})
   readonly sourceId?: string;
 

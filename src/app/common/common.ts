@@ -26,10 +26,10 @@ export class PageDTO {
   readonly _id?: number;
 
   @ApiModelProperty({ description: '当前页码', required: false })
-  page: number;
+  page?: number;
 
   @ApiModelProperty({ description: '当前页数', required: false })
-  pageSize: number;
+  pageSize?: number;
 }
 
 export class HeadersDTO {
@@ -47,7 +47,7 @@ export function ResFromat(rc: number, msg: string, data?: any) {
   };
 }
 
-export function rowsFormat(headers, rows){
+export function rowsFormat(headers: Array<any>, rows: Array<any>){
   let thisRows = [];
   _.map(rows, (value) => {
     let row = {};
@@ -91,4 +91,26 @@ export function verifyToken(req, res, token) {
       resolve(info);
     });
   });
+}
+
+/**
+ * 将DTO对象进行模糊搜索的格式化
+ * @param obj
+ */
+export function regexDTOFormat(obj){
+  let newObj = [];
+
+  _.forEach(obj, (value, key) => {
+    if (key !== '_id'){
+      let thisObj = {};
+      thisObj[key] = { $regex: value, $options: '$i' };
+      newObj.push(thisObj);
+    }
+  });
+  if (newObj.length){
+    return { $or: newObj };
+  }else {
+    return {};
+  }
+
 }

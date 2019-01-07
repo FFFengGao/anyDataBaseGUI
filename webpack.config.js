@@ -1,6 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
 const nodeExternals = require('webpack-node-externals')
+// const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 module.exports = {
   entry: ['webpack/hot/poll?1000', './src/main.hmr.ts'],
@@ -26,6 +27,7 @@ module.exports = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin()
+    // new CopyWebpackPlugin([{ from: '/src/public/*', to: '/dist/public' }])
   ],
   output: {
     path: path.join(__dirname, 'dist'),

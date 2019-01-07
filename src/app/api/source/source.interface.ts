@@ -5,6 +5,8 @@ import { Document } from 'mongoose';
 export interface SourceInterface extends Document {
   // 来源id
   sourceId: string;
+  // 查询方式
+  queryFunc: string;
   // 该条数据别名
   name: string;
   // 经过标准化后的来源数据列

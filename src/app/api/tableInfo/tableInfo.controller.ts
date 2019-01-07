@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Query, Body} from '@nestjs/common';
 import { ApiUseTags, ApiResponse, ApiOperation } from '@nestjs/swagger';
 import { TableInfoService } from './tableInfo.service';
-import { TableInfoParamsDTO, TableStandradParamsDTO, QueryStandradParam, EditDTO} from './tableInfo.dto';
+import { TableInfoParamsDTO, TableStandradParamsDTO, QueryStandradParam, TableEditDTO} from './tableInfo.dto';
 import { FindOneDTO } from '../dblinks/dblinks.dto';
 import { ResFromatType } from '../../common/common';
 
@@ -61,7 +61,7 @@ export class TableInfoController {
   @Post('/edit')
   @ApiOperation({ title: '根据_id修改本条信息' })
   @ApiResponse({ status: 200, type: ResFromatType })
-  edit(@Body() editDTO: EditDTO) {
+  edit(@Body() editDTO: TableEditDTO) {
     return this.tableInfoService.edit(editDTO);
   }
 }

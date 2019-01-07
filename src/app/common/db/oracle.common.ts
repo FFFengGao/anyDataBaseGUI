@@ -42,7 +42,11 @@ export class OracledbCommon {
     return this.sqlExecute('select table_name from user_tables');
   }
 
-  getTableInfo(tableName: string) {
+  async getTableInfo(tableName: string) {
     return this.sqlExecute('SELECT * FROM ' + tableName + ' t where ROWNUM < 50');
+  }
+
+  pageTo(sql: string, offset: number, pageSize: number){
+    return `select * from (select row_.*, ROWNUM rownum_ from (${sql}) row_ where rownum <= ${offset + pageSize}) where rownum_ > ${offset}`;
   }
 }

@@ -8,6 +8,9 @@ export class SourceParams {
   @ApiModelProperty({ description: '来源id' })
   sourceId: string;
 
+  @ApiModelProperty({ description: '查询方式' })
+  queryFunc: string;
+
   @ApiModelProperty({ description: '该条数据别名' })
   name: string;
 
@@ -46,8 +49,8 @@ export class SourceRes {
   column: TableInfoDTO;
 }
 
-export class EditDTO {
-  @ApiModelProperty({ description: '主键_id如果传入则修改对象' })
+export class SouceEditDTO {
+  @ApiModelProperty({ description: '主键_id' })
   _id: string;
 
   @ApiModelProperty({ description: '来源id', required: false })
@@ -58,4 +61,18 @@ export class EditDTO {
 
   @ApiModelProperty({ description: '经过标准化后的来源数据列', isArray: true, required: false})
   column?: TableInfoDTO;
+
+  @ApiModelProperty({ description: '查询方式', required: false})
+  queryFunc: string;
+}
+
+export class GetTableData{
+  @ApiModelProperty({ description: '主键_id' })
+  _id: string;
+
+  @ApiModelProperty({ description: '页码' })
+  page: string;
+
+  @ApiModelProperty({ description: '页数' })
+  pageSize: string;
 }

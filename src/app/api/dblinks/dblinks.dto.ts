@@ -25,7 +25,7 @@ export class DBlinks {
   readonly workSpace: string;
 }
 
-export class EditDTO {
+export class BDlinkEditDTO {
   @ApiModelProperty({ description: '主键, 如果传入则修改该条' })
   readonly _id: string;
 

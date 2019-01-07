@@ -27,9 +27,13 @@ export class TableInfoService {
     await db.getConnection();
     return db.getTableInfo(tableInfoParamsDTO.tableName).then((value: any) => {
       const resData = rowsFormat(value.metaData, value.rows);
-      return ResFromat(1, '获取表名成功!', resData);
+      db.dbConnection.close();
+      return ResFromat(1, '获取表名成功!', {
+        headers: resData.headers || [],
+        rows: resData.rows || [],
+      });
     }).catch((err) => {
-      return ResFromat(0, err || err.message);
+      return ResFromat(0, err.message || err);
     });
   }
 
@@ -43,7 +47,8 @@ export class TableInfoService {
     await db.getConnection();
     // 传入需要查询的sql
     return db.getTableName().then((value: any) => {
-      const resData = _.flattenDeep(value.rows);
+      db.dbConnection.close();
+      const resData: Array<any> = _.flattenDeep(value.rows);
       return ResFromat(1, '获取表名成功!', resData);
     }).catch((err) => {
       return ResFromat(0, err || err.message);
@@ -56,9 +61,19 @@ export class TableInfoService {
    */
   async save(tableStandradParamsDTO){
     tableStandradParamsDTO.createTime = new Date();
-    const DBInfo = new this.tableInfoModel(tableStandradParamsDTO);
-    const Result = await DBInfo.save();
-    return ResFromat(1, '请求成功!', [Result]);
+    // const DBInfo = new this.tableInfoModel(tableStandradParamsDTO);
+    // const Result = await DBInfo.save();
+
+    await this.tableInfoModel.bulkWrite([{
+      updateOne: {
+        filter: {
+          tableName: tableStandradParamsDTO.tableName,
+        },
+        update: tableStandradParamsDTO,
+        upsert: true,
+      },
+    }]).catch(console.error);
+    return ResFromat(1, '请求成功!');
   }
 
   /**

@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { DBInfoInterface } from './dblinks.interface';
-import { ResFromat, rowsFormat } from '../../common/common';
+import { ResFromat, rowsFormat, regexDTOFormat } from '../../common/common';
 import { ConnectionPublic } from '../../common/db.common';
 import { DBlinks } from './dblinks.dto';
 
@@ -17,6 +17,7 @@ export class DBlinksService {
   async testConnection(dbInfo) {
     const testDB = ConnectionPublic(dbInfo);
     return testDB.getConnection().then((data) => {
+      testDB.dbConnection.close();
       return ResFromat(1, '连接成功!');
     }).catch((err) => {
       return ResFromat(0, err || err.message);
@@ -39,7 +40,7 @@ export class DBlinksService {
     delete queryDTO.page;
     delete queryDTO.pageSize;
 
-    return this.dbInfoModel.find(queryDTO).skip(page * pageSize).limit(pageSize).sort(_id).then((data) => {
+    return this.dbInfoModel.find(regexDTOFormat(queryDTO)).skip(page * pageSize).limit(pageSize).sort(_id).then((data) => {
       return ResFromat(1, '查询成功!', data);
     }).catch((err) => {
       return ResFromat(0, err || err.message);
@@ -73,6 +74,7 @@ export class DBlinksService {
     // 传入需要查询的sql
     return db.sqlExecute(sqlQueryDTO.sqlStr).then((value: any) => {
       const resData = rowsFormat(value.metaData, value.rows);
+      db.dbConnection.close();
       return ResFromat(1, '获取表名成功!', resData);
     }).catch((err) => {
       return ResFromat(0, err || err.message);
@@ -82,7 +84,7 @@ export class DBlinksService {
   edit(editDTO) {
     const _id = editDTO._id;
     delete editDTO._id;
-    return this.dbInfoModel.findByIdAndUpdate(_id, {
+    return this.dbInfoModel.findOneAndUpdate(_id, {
       $set: editDTO,
     }, { new: true }).then((res) => {
       return ResFromat(1, '更新成功!', res);

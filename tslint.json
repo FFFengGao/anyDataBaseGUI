@@ -26,6 +26,7 @@
             true,
             150
         ],
+        "max-classes-per-file":false,
         "member-ordering": [
             false
         ],
@@ -41,9 +42,6 @@
         "arrow-parens": false,
         "object-literal-sort-keys": false,
         "no-unused-expression": false,
-        "max-classes-per-file": [
-            false
-        ],
         "variable-name": [
             false
         ],
@@ -52,7 +50,13 @@
         ],
         "one-variable-per-declaration": [
             false
-        ]
+        ],
+        "no-eval": false
     },
-    "rulesDirectory": []
+    "rulesDirectory": [],
+    "indent": [
+        true,
+        "tabs",
+        2
+    ]
 }

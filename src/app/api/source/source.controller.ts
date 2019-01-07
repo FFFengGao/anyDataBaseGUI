@@ -2,7 +2,7 @@ import { Controller, Get, Query, Post, Body, Headers } from '@nestjs/common';
 import { ApiUseTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { SourceService } from './source.service';
 import { ResFromatType, PageDTO, HeadersDTO } from '../../common/common';
-import { SourceRes, SourceParams, EditDTO } from './source.dto';
+import { SourceRes, SourceParams, GetTableData, SouceEditDTO } from './source.dto';
 import { FindOneDTO } from '../dblinks/dblinks.dto';
 
 @ApiUseTags('源地址设置部分')
@@ -47,7 +47,14 @@ export class SourceController {
   @Post('/edit')
   @ApiOperation({ title: '根据_id修改指定源数据' })
   @ApiResponse({ status: 200, type: ResFromatType })
-  edit(@Body() editDTO: EditDTO) {
+  edit(@Body() editDTO: SouceEditDTO) {
     return this.sourceService.edit(editDTO);
+  }
+
+  @Get('/standard/tableData')
+  @ApiOperation({ title: '根据_id分页获取标准化后的数据' })
+  @ApiResponse({ status: 200, type: ResFromatType })
+  getSourceData(@Query() getTableData: GetTableData){
+    return this.sourceService.getSourceData(getTableData);
   }
 }
